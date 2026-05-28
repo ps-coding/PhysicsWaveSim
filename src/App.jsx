@@ -56,10 +56,22 @@ export default function DoubleSlitSimulationSite() {
       return lightWavelength;
     }
 
-    function interference(y) {
+    function interference(yOffset) {
       const wl = effectiveWavelength();
-      const phase = (Math.PI * slitDistance * y) / (wl * 120);
-      return Math.pow(Math.cos(phase), 2);
+      const wavePx = wl * 80;
+      const wallX = width * 0.45;
+      const screenX = width * 0.82;
+      const centerY = height * 0.5;
+      const slitOffset = 75 + slitDistance * 30;
+      const wallXabs = wallX + 9;
+      const slit1Y = centerY - slitOffset;
+      const slit2Y = centerY + slitOffset;
+      const y = centerY + yOffset;
+      const dx = screenX - wallXabs;
+      const r1 = Math.sqrt(dx * dx + (y - slit1Y) ** 2);
+      const r2 = Math.sqrt(dx * dx + (y - slit2Y) ** 2);
+      const phaseDiff = (2 * Math.PI * (r1 - r2)) / wavePx;
+      return Math.pow(Math.cos(phaseDiff / 2), 2);
     }
 
     function background() {
